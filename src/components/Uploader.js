@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadFile } from "../store/slices/contractSlice";
+import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import "../styles/Uploader.css";
+
 require("dotenv").config();
 
-const Uploader = () => {
+const Uploader = (props) => {
   const [fileSelected, setFileSelected] = useState(null);
   const files = useSelector((store) => store.contractStorage.files);
   const dispatch = useDispatch();
@@ -25,23 +28,63 @@ const Uploader = () => {
   };
   const onSubmit = async (event) => {
     event.preventDefault();
-    dispatch(uploadFile(fileSelected));
+    await dispatch(uploadFile(fileSelected));
+    props.onHide && props.onHide();
   };
-  useEffect(() => {
-    console.log("FILES: ", files);
-  });
-  const imgSrc =
-    files.length > 0
-      ? `${process.env.REACT_APP_IF_DEDICATED_GATEWAY}/ipfs/${files[0].cid}`
-      : "";
+
   return (
-    <>
-      <img src={imgSrc} alt="logo" />
-      <form onSubmit={onSubmit}>
-        <input type="file" onChange={captureFile}></input>
-        <input type="submit"></input>
-      </form>
-    </>
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      dialogClassName="uploader"
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          File Upload
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Form.Group>
+            <Form.File
+              id="exampleFormControlFile1"
+              label="Example file input"
+              onChange={captureFile}
+            />
+          </Form.Group>
+        </Form>
+        <Form.Group as={Row} controlId="formPlaintextSize">
+          <Form.Label column sm="2">
+            Size
+          </Form.Label>
+          <Col sm="10">
+            <Form.Control
+              plaintext
+              readOnly
+              value={fileSelected ? `${fileSelected.size}` : "unknown"}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} controlId="formPlaintextType">
+          <Form.Label column sm="2">
+            Type
+          </Form.Label>
+          <Col sm="10">
+            <Form.Control
+              plaintext
+              readOnly
+              value={fileSelected ? `${fileSelected.type}` : "unknown"}
+            />
+          </Col>
+        </Form.Group>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={onSubmit}>Upload</Button>
+        <Button onClick={props.onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 

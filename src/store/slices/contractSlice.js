@@ -9,7 +9,6 @@ const auth =
     process.env.REACT_APP_IF_API_KEY + ":" + process.env.REACT_APP_IF_KEY_SECRET
   ).toString("base64");
 
-console.log(auth);
 const ipfs = create({
   host: "ipfs.infura.io",
   port: 5001,
@@ -84,7 +83,7 @@ export const uploadFile = createAsyncThunk(
       const time = Date.now();
       if (contract) {
         try {
-          contract.methods
+          await contract.methods
             .push(name, cidString, size, time, type)
             .send({ from: account })
             .then((r) => {
@@ -94,7 +93,6 @@ export const uploadFile = createAsyncThunk(
           console.log(error);
         }
       }
-      console.log("asdak");
 
       return {
         name: name,
@@ -117,14 +115,17 @@ export const contractSlice = createSlice({
       state.account = account;
       state.abi = abi;
       state.address = address;
-      state.files.push(...files);
+      const filesCopy = [...files];
+      filesCopy.reverse();
+      state.files.push(...filesCopy);
       state.isLoaded = true;
     });
     builder.addCase(loadContract.rejected, (state, action) => {
       throw action.payload;
     });
     builder.addCase(uploadFile.fulfilled, (state, action) => {
-      state.files.push(action.payload);
+      state.files.unshift(action.payload);
+      // state.files.sort((f1, f2) => f1.time > f2.time);
     });
     builder.addCase(uploadFile.rejected, (state, action) => {
       console.log(action.payload);
