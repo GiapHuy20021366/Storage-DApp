@@ -1,11 +1,10 @@
+const gateways = {
+  local: process.env.REACT_APP_IPFS_LOCAL_GATEWAY,
+  infura: process.env.REACT_APP_IF_DEDICATED_GATEWAY,
+};
+
 const getUri = (file) => {
-  const gateways = {
-    local: process.env.REACT_APP_IPFS_LOCAL_GATEWAY,
-    infura: process.env.REACT_APP_IF_DEDICATED_GATEWAY,
-  };
-
   const gateway = gateways[process.env.REACT_APP_IPFS_NODE];
-
   if (!file) {
     return "/images/File_Nothing.jpg";
   }
@@ -21,6 +20,12 @@ const getUri = (file) => {
   return "/images/File_Nothing.jpg";
 };
 
+const getUrl = (file) => {
+    const gateway = gateways[process.env.REACT_APP_IPFS_NODE];
+    return `${gateway}/ipfs/${file.cid}`;
+};
+
 module.exports = {
   getUri,
+  getUrl,
 };

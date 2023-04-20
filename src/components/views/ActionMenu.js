@@ -9,7 +9,7 @@ import "../../styles/ActionMenu.css";
 import FileView from "./FileView";
 import RenameFile from "./RenameFile";
 import { useSelector } from "react-redux";
-import { getUri } from "../../utils/getReviewPng";
+import { getUrl } from "../../utils/getReviewPng";
 
 const ActionMenu = () => {
   const [view, setView] = useState(false);
@@ -29,7 +29,7 @@ const ActionMenu = () => {
   return (
     <span>
       <a
-        href={getUri(file)}
+        href={getUrl(file)}
         download
         style={{ display: "none" }}
         target={"_blank"}
