@@ -13,6 +13,7 @@ contract FileStorage {
     File[] public files;
     mapping(string => File) cid2File;
     mapping(string => bool) isCIDExists;
+    mapping(string => uint256) cid2Index;
 
     function push(
         string memory name,
@@ -21,14 +22,24 @@ contract FileStorage {
         uint256 time,
         string memory type_
     ) public returns (File memory) {
-        if (isCIDExists[cid]) {
-            revert();
-        }
         File memory newFile = File(name, cid, size, time, type_);
         files.push(newFile);
-        addDataToMapping(newFile);
+        cid2File[cid] = newFile;
         isCIDExists[cid] = true;
+        cid2Index[cid] = files.length - 1;
+        // addDataToMapping(newFile);
         return newFile;
+    }
+
+    function renameFile(
+        string memory cid,
+        string memory newName
+    ) public returns (File memory) {
+        uint256 index = cid2Index[cid];
+        File storage file = files[index];
+        file.name = newName;
+        files[index] = file;
+        return file;
     }
 
     function isCIDExisted(string memory cid) public view returns (bool) {

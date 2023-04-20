@@ -3,6 +3,7 @@ import { Container, Card, Col, Row, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import "../styles/FileContainer.css";
+import { ms2Date } from "../utils/parseDate";
 
 const FileContainer = ({ setSelectedFile }) => {
   const files = useSelector((store) => store.contractStorage.files);
@@ -18,7 +19,7 @@ const FileContainer = ({ setSelectedFile }) => {
                 <th>Name</th>
                 <th>Type</th>
                 <th>Size</th>
-                <th>Date</th>
+                <th>Time</th>
               </tr>
             </thead>
             <tbody>
@@ -31,10 +32,10 @@ const FileContainer = ({ setSelectedFile }) => {
                       setSelectedFile && setSelectedFile(file);
                     }}
                   >
-                    <th>{file.name}</th>
-                    <th>{file.type_}</th>
-                    <th>{file.size}</th>
-                    <th>{file.time}</th>
+                    <td>{file.name}</td>
+                    <td>{file.type_}</td>
+                    <td>{file.size}</td>
+                    <td>{ms2Date(file.time)}</td>
                   </tr>
                 );
               })}

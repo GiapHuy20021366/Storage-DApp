@@ -91,6 +91,7 @@ export const uploadFile = createAsyncThunk(
             });
         } catch (error) {
           console.log(error);
+          return rejectWithValue(error);
         }
       }
 
@@ -102,6 +103,32 @@ export const uploadFile = createAsyncThunk(
         cid: cidString,
       };
     }
+  }
+);
+
+export const renameFile = createAsyncThunk(
+  "file/rename",
+  async ({ file, newName }, { getState, rejectWithValue }) => {
+    const { account } = getState().contractStorage;
+    const { cid } = file;
+    const contract = contractRef.current;
+    if (contract) {
+      try {
+        await contract.methods
+          .renameFile(cid, newName)
+          .send({ from: account })
+          .then((r) => {
+            console.log("Sended: ", r);
+          });
+      } catch (error) {
+        console.log(error);
+        return rejectWithValue(error);
+      }
+    }
+    return {
+      ...file,
+      name: newName,
+    };
   }
 );
 
@@ -125,10 +152,27 @@ export const contractSlice = createSlice({
     });
     builder.addCase(uploadFile.fulfilled, (state, action) => {
       state.files.unshift(action.payload);
-      // state.files.sort((f1, f2) => f1.time > f2.time);
     });
     builder.addCase(uploadFile.rejected, (state, action) => {
-      console.log(action.payload);
+      throw action.payload;
+    });
+
+    builder.addCase(renameFile.fulfilled, (state, action) => {
+      const fileUpdated = action.payload;
+      const files = [...state.files];
+      const index = files.find((file) => file.cid === fileUpdated.cid);
+      if (index !== -1) {
+        files[index] = fileUpdated;
+      }
+      state.files = state.files.map((file) => {
+        if (file.cid === fileUpdated.cid) {
+          return fileUpdated;
+        }
+        return file;
+      });
+    });
+    builder.addCase(renameFile.rejected, (state, action) => {
+      throw action.payload;
     });
   },
 });

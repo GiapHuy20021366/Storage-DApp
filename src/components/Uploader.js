@@ -74,7 +74,7 @@ const Uploader = (props) => {
             <Form.Control
               plaintext
               readOnly
-              value={fileSelected ? `${fileSelected.type}` : "unknown"}
+              value={fileSelected ? `${fileSelected.type_}` : "unknown"}
             />
           </Col>
         </Form.Group>

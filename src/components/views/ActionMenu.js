@@ -8,9 +8,11 @@ import {
 } from "react-icons/ai";
 import "../../styles/ActionMenu.css";
 import FileView from "./FileView";
+import RenameFile from "./RenameFile";
 
 const ActionMenu = ({ file }) => {
   const [view, setView] = useState(false);
+  const [rename, setRename] = useState(false);
   const aRef = useRef();
 
   if (!file) {
@@ -40,16 +42,23 @@ const ActionMenu = ({ file }) => {
         title="View"
         onClick={() => setView(true)}
       />
-      <AiFillDelete className="mx-2 delete-icon" title="Delete" />
-      <AiFillEdit className="mx-2 rename-icon" title="Rename" />
+      <AiFillEdit
+        className="mx-2 rename-icon"
+        title="Rename"
+        onClick={() => setRename(true)}
+      />
       <AiOutlineDownload
         className="mx-2 download-icon"
         title="Download"
         onClick={() => downloadURI()}
       />
+      <AiFillDelete className="mx-2 delete-icon" title="Delete" />
 
       {/* File View */}
       <FileView file={file} show={view} onHide={() => setView(false)} />
+
+      {/* Rename File */}
+      <RenameFile file={file} show={rename} onHide={() => setRename(false)} />
     </span>
   );
 };

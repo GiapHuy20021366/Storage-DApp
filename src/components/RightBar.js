@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Button, Container, Tabs, Tab, Form, Col, Row } from "react-bootstrap";
 import "../styles/RightBar.css";
 import FileReview from "./views/FileReview";
+import { ms2Date } from "../utils/parseDate";
 
 const RightBar = ({ selectedFile }) => {
   const [vFile, setVFile] = useState({
     name: "No file selected",
     type_: "No file selected",
     size: "No file selected",
-    date: "No file selected",
+    time: "No file selected",
   });
   useEffect(() => {
     if (selectedFile) {
@@ -55,7 +56,11 @@ const RightBar = ({ selectedFile }) => {
                   Time:
                 </Form.Label>
                 <Col sm="10">
-                  <Form.Control plaintext readOnly value={vFile.time} />
+                  <Form.Control
+                    plaintext
+                    readOnly
+                    value={ms2Date(vFile.time)}
+                  />
                 </Col>
               </Form.Group>
             </Form>

@@ -4,3 +4,8 @@
     right: "20px";
     z-index: 10;
 }
+
+#go-to-dashboard {
+    background-color: transparent;
+    /* text-decoration: underline; */
+}

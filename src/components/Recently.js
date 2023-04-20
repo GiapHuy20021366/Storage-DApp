@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Card, Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { getUri } from "../utils/getReviewPng";
 import "../styles/Recently.css";
 
 const Recently = ({ setSelectedFile }) => {
@@ -11,10 +12,6 @@ const Recently = ({ setSelectedFile }) => {
       <h3>Recently</h3>
       <Row>
         {files.slice(0, 4).map((file, index) => {
-          const ipfsUrl = `${process.env.REACT_APP_IF_DEDICATED_GATEWAY}/ipfs/${file.cid}`;
-          const url = file.type_.startsWith("image/")
-            ? ipfsUrl
-            : "/images/File.png";
           return (
             <Col className="col-3" key={file.cid}>
               <Card
@@ -26,7 +23,7 @@ const Recently = ({ setSelectedFile }) => {
                 <Card.Body>
                   <Card.Title>{file.name}</Card.Title>
                 </Card.Body>
-                <Card.Img variant="top" src={url} />
+                <Card.Img variant="top" src={getUri(file)} />
               </Card>
             </Col>
           );

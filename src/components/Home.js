@@ -21,6 +21,7 @@ const Home = () => {
         }}
         size="lg"
         onClick={onClickGo}
+        id="go-to-dashboard"
       >
         Go to Dashboard
       </Button>
