@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import "./App.css";
 import { loadContract } from "../store/slices/contractSlice";
 import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import DashBoard from "./DashBoard";
+import "../styles/App.css";
 
 const App = () => {
   const dispatch = useDispatch();

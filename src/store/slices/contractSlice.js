@@ -70,7 +70,7 @@ export const loadContract = createAsyncThunk(
 export const uploadFile = createAsyncThunk(
   "file/new",
   async (file, { rejectWithValue, getState }) => {
-    const { name, buffer, size, type } = file;
+    const { name, buffer, size, type_ } = file;
     if (buffer) {
       let result = await ipfs.add(buffer);
       console.log(result);
@@ -84,7 +84,7 @@ export const uploadFile = createAsyncThunk(
       if (contract) {
         try {
           await contract.methods
-            .push(name, cidString, size, time, type)
+            .push(name, cidString, size, time, type_)
             .send({ from: account })
             .then((r) => {
               console.log("Sended: ", r);
@@ -97,7 +97,7 @@ export const uploadFile = createAsyncThunk(
       return {
         name: name,
         size: size,
-        type: type,
+        type_: type_,
         time: time,
         cid: cidString,
       };

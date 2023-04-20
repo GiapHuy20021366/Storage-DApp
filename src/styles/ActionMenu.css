@@ -1,0 +1,47 @@
+.view-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    color: green;
+    border-radius: 15px;
+}
+
+.view-icon:hover {
+    background-color: #E1E5EA;
+}
+
+.delete-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    color: red;
+    border-radius: 15px;
+}
+
+.delete-icon:hover {
+    background-color: #E1E5EA;
+}
+
+.rename-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    color: black;
+    border-radius: 15px;
+}
+
+.rename-icon:hover {
+    background-color: #E1E5EA;
+}
+
+.download-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    color: chartreuse;
+    border-radius: 15px;
+}
+
+.download-icon:hover {
+    background-color: #E1E5EA;
+}

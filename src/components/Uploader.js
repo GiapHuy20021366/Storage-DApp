@@ -8,9 +8,7 @@ require("dotenv").config();
 
 const Uploader = (props) => {
   const [fileSelected, setFileSelected] = useState(null);
-  const files = useSelector((store) => store.contractStorage.files);
   const dispatch = useDispatch();
-  // const [imgSrc, setImgSrc] = useState("");
   const captureFile = (event) => {
     event.preventDefault();
     const file = event.target.files[0];
@@ -21,7 +19,7 @@ const Uploader = (props) => {
       setFileSelected({
         name: file.name,
         size: file.size,
-        type: file.type,
+        type_: file.type,
         buffer: Buffer(reader.result),
       });
     };
@@ -29,6 +27,7 @@ const Uploader = (props) => {
   const onSubmit = async (event) => {
     event.preventDefault();
     await dispatch(uploadFile(fileSelected));
+    setFileSelected(null);
     props.onHide && props.onHide();
   };
 
