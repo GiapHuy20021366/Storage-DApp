@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container, Tabs, Tab, Form, Col, Row } from "react-bootstrap";
+import { Container, Tabs, Tab, Form, Col, Row } from "react-bootstrap";
 import "../styles/RightBar.css";
 import FileReview from "./views/FileReview";
 import { ms2Date } from "../utils/parseDate";
@@ -28,7 +28,7 @@ const RightBar = () => {
       <Tabs defaultActiveKey="detail" id="uncontrolled-tab-example">
         <Tab eventKey="detail" title="Detail">
           <Container id="custom-container-scrollbar">
-            <FileReview file={file}></FileReview>
+            <FileReview file={vFile}></FileReview>
             <hr />
             <Form className="mt-3">
               <Form.Group as={Row} controlId="formPlaintextName">
