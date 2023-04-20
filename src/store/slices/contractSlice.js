@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import FileStorage from "../../abis/FileStorage.json";
 import Web3 from "web3";
 import { create } from "ipfs-http-client";
+import { v4 as uuidv4 } from "uuid";
 
 const auth =
   "Basic " +
@@ -81,10 +82,11 @@ export const uploadFile = createAsyncThunk(
       const ipfsPath = `${process.env.REACT_APP_IF_DEDICATED_GATEWAY}/ipfs/${cidString}`;
       console.log(ipfsPath);
       const time = Date.now();
+      const uuid = uuidv4();
       if (contract) {
         try {
           await contract.methods
-            .push(name, cidString, size, time, type_)
+            .push(name, cidString, size, time, type_, uuid)
             .send({ from: account })
             .then((r) => {
               console.log("Sended: ", r);
@@ -101,6 +103,8 @@ export const uploadFile = createAsyncThunk(
         type_: type_,
         time: time,
         cid: cidString,
+        uuid: uuid,
+        modify: time,
       };
     }
   }
@@ -110,12 +114,13 @@ export const renameFile = createAsyncThunk(
   "file/rename",
   async ({ file, newName }, { getState, rejectWithValue }) => {
     const { account } = getState().contractStorage;
-    const { cid } = file;
+    const { uuid } = file;
     const contract = contractRef.current;
+    const modify = Date.now();
     if (contract) {
       try {
         await contract.methods
-          .renameFile(cid, newName)
+          .renameFile(uuid, newName, modify)
           .send({ from: account })
           .then((r) => {
             console.log("Sended: ", r);
@@ -128,6 +133,7 @@ export const renameFile = createAsyncThunk(
     return {
       ...file,
       name: newName,
+      modify,
     };
   }
 );
@@ -165,11 +171,12 @@ export const contractSlice = createSlice({
         files[index] = fileUpdated;
       }
       state.files = state.files.map((file) => {
-        if (file.cid === fileUpdated.cid) {
+        if (file.uuid === fileUpdated.uuid) {
           return fileUpdated;
         }
         return file;
       });
+      return state;
     });
     builder.addCase(renameFile.rejected, (state, action) => {
       throw action.payload;

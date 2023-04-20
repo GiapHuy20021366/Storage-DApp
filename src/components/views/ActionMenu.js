@@ -9,11 +9,13 @@ import {
 import "../../styles/ActionMenu.css";
 import FileView from "./FileView";
 import RenameFile from "./RenameFile";
+import { useSelector } from "react-redux";
 
-const ActionMenu = ({ file }) => {
+const ActionMenu = () => {
   const [view, setView] = useState(false);
   const [rename, setRename] = useState(false);
   const aRef = useRef();
+  const file = useSelector((store) => store.fileContext.selected);
 
   if (!file) {
     return <></>;

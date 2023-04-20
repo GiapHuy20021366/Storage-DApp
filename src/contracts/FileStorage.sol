@@ -8,36 +8,42 @@ contract FileStorage {
         uint256 size;
         uint256 time;
         string type_;
+        uint256 modify;
+        string uuid;
     }
 
     File[] public files;
     mapping(string => File) cid2File;
     mapping(string => bool) isCIDExists;
     mapping(string => uint256) cid2Index;
+    mapping(string => uint256) uuid2Index;
 
     function push(
         string memory name,
         string memory cid,
         uint256 size,
         uint256 time,
-        string memory type_
+        string memory type_,
+        string memory uuid
     ) public returns (File memory) {
-        File memory newFile = File(name, cid, size, time, type_);
+        File memory newFile = File(name, cid, size, time, type_, time, uuid);
         files.push(newFile);
         cid2File[cid] = newFile;
         isCIDExists[cid] = true;
         cid2Index[cid] = files.length - 1;
-        // addDataToMapping(newFile);
+        uuid2Index[uuid] = files.length - 1;
         return newFile;
     }
 
     function renameFile(
         string memory cid,
-        string memory newName
+        string memory newName,
+        uint256 modify
     ) public returns (File memory) {
-        uint256 index = cid2Index[cid];
+        uint256 index = uuid2Index[cid];
         File storage file = files[index];
         file.name = newName;
+        file.modify = modify;
         files[index] = file;
         return file;
     }

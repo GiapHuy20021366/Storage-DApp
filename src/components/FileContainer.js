@@ -1,13 +1,17 @@
 import React from "react";
 import { Container, Card, Col, Row, Table } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import "../styles/FileContainer.css";
 import { ms2Date } from "../utils/parseDate";
+import { set } from "../store/slices/fileContextSlice";
 
 const FileContainer = ({ setSelectedFile }) => {
   const files = useSelector((store) => store.contractStorage.files);
-
+  const dispatch = useDispatch();
+  const onClickFile = (file) => {
+    dispatch(set(file));
+  };
   return (
     <>
       <h3>Storage</h3>
@@ -26,10 +30,10 @@ const FileContainer = ({ setSelectedFile }) => {
               {files.map((file) => {
                 return (
                   <tr
-                    key={file.cid}
+                    key={file.uuid}
                     className="custom-table-row"
                     onClick={() => {
-                      setSelectedFile && setSelectedFile(file);
+                      onClickFile(file);
                     }}
                   >
                     <td>{file.name}</td>

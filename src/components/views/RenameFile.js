@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { Modal, Form, Col, Row, Container, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { renameFile } from "../../store/slices/contractSlice";
+import { set } from "../../store/slices/fileContextSlice";
 
 const RenameFile = ({ file, show, onHide }) => {
   const dispatch = useDispatch();
@@ -10,12 +11,13 @@ const RenameFile = ({ file, show, onHide }) => {
     event.preventDefault();
     const newName = newNameRef.current.value.trim();
     if (newName && newName.length > 5 && newName !== file.name) {
-      await dispatch(
+      const action = await dispatch(
         renameFile({
           file,
           newName,
         })
       );
+      dispatch(set(action.payload));
       onHide && onHide();
     } else {
       window.alert("Number of character must large than 5");

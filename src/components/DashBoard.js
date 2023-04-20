@@ -21,7 +21,6 @@ import ActionMenu from "./views/ActionMenu";
 
 const DashBoard = () => {
   const [showUpload, setShowUpload] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
 
   return (
     <Container className="mx-0 px-0" fluid id="dashboard-container">
@@ -38,20 +37,20 @@ const DashBoard = () => {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            <ActionMenu file={selectedFile} />
+            <ActionMenu />
           </Container>
           <Container fluid className="px-0" id="main-content-container">
             {/* Recently */}
             <Row className="mt-3 mb-5 mr-0">
-              <Recently setSelectedFile={setSelectedFile} />
+              <Recently />
             </Row>
 
             {/* File container */}
-            <FileContainer setSelectedFile={setSelectedFile} />
+            <FileContainer />
           </Container>
         </Col>
         <Col xs={3} className="px-0">
-          <RightBar selectedFile={selectedFile} />
+          <RightBar />
         </Col>
       </Row>
 
