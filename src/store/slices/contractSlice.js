@@ -4,20 +4,33 @@ import Web3 from "web3";
 import { create } from "ipfs-http-client";
 import { v4 as uuidv4 } from "uuid";
 
-const auth =
-  "Basic " +
-  Buffer.from(
-    process.env.REACT_APP_IF_API_KEY + ":" + process.env.REACT_APP_IF_KEY_SECRET
-  ).toString("base64");
+const ipfsClient = () => {
+  if (process.env.REACT_APP_IPFS_NODE === "infura") {
+    const auth =
+      "Basic " +
+      Buffer.from(
+        process.env.REACT_APP_IF_API_KEY +
+          ":" +
+          process.env.REACT_APP_IF_KEY_SECRET
+      ).toString("base64");
+    return create({
+      host: "ipfs.infura.io",
+      port: 5001,
+      protocol: "https",
+      headers: {
+        authorization: auth,
+      },
+    });
+  }
+  // Local Node
+  return create({
+    host: "localhost",
+    port: process.env.REACT_APP_IPFS_LOCAL_PORT,
+    protocol: "http",
+  });
+};
 
-const ipfs = create({
-  host: "ipfs.infura.io",
-  port: 5001,
-  protocol: "https",
-  headers: {
-    authorization: auth,
-  },
-});
+const ipfs = ipfsClient();
 
 const contractRef = {
   current: null,
@@ -79,8 +92,7 @@ export const uploadFile = createAsyncThunk(
       const contract = contractRef.current;
       const { cid } = result;
       const cidString = cid.toString();
-      const ipfsPath = `${process.env.REACT_APP_IF_DEDICATED_GATEWAY}/ipfs/${cidString}`;
-      console.log(ipfsPath);
+      console.log("CID: ", cidString);
       const time = Date.now();
       const uuid = uuidv4();
       if (contract) {

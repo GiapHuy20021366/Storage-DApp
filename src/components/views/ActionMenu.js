@@ -9,6 +9,7 @@ import "../../styles/ActionMenu.css";
 import FileView from "./FileView";
 import RenameFile from "./RenameFile";
 import { useSelector } from "react-redux";
+import { getUri } from "../../utils/getReviewPng";
 
 const ActionMenu = () => {
   const [view, setView] = useState(false);
@@ -21,7 +22,6 @@ const ActionMenu = () => {
   }
   const downloadURI = () => {
     if (aRef.current) {
-      // iframeRef.current.src = `${process.env.REACT_APP_IF_DEDICATED_GATEWAY}/ipfs/${file.cid}`;
       aRef.current.click();
     }
   };
@@ -29,7 +29,7 @@ const ActionMenu = () => {
   return (
     <span>
       <a
-        href={`${process.env.REACT_APP_IF_DEDICATED_GATEWAY}/ipfs/${file.cid}`}
+        href={getUri(file)}
         download
         style={{ display: "none" }}
         target={"_blank"}
