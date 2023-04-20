@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import { Row } from "react-bootstrap";
 import {
   AiOutlineFullscreen,
   AiFillDelete,
