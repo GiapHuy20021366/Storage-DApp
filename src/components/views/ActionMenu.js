@@ -30,7 +30,7 @@ const ActionMenu = () => {
     <span>
       <a
         href={getUrl(file)}
-        download
+        download={`${file.name}`}
         style={{ display: "none" }}
         target={"_blank"}
         ref={aRef}
