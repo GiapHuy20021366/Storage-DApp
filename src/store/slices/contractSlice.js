@@ -55,7 +55,7 @@ export const loadContract = createAsyncThunk(
     } else if (window.web3) {
       window.web3 = new Web3(window.web3.currentProvider);
     } else {
-      // window.alert("Metamask not found");
+      window.alert("Metamask not found");
       return rejectWithValue("Metamark extension not found!");
     }
     // Load resource
@@ -64,6 +64,7 @@ export const loadContract = createAsyncThunk(
     const account = accounts[0];
     const networkId = await web3.eth.net.getId();
     const networkData = await FileStorage.networks[networkId];
+
     if (!networkData) {
       return rejectWithValue("Smart contract not deploy for this network");
     }
@@ -71,7 +72,11 @@ export const loadContract = createAsyncThunk(
     const address = networkData.address;
     const contract = new web3.eth.Contract(abi, address);
     contractRef.current = contract;
-    const files = await contract.methods.getFiles().call();
+    const files = await contract.methods
+      .getFiles()
+      .call()
+      .catch((err) => console.log("ERR: ", err));
+    console.log(files);
     return {
       account,
       abi,
