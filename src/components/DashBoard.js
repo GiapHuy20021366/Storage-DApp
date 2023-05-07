@@ -1,16 +1,5 @@
 import React, { useState } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Dropdown,
-  Form,
-  FormControl,
-  Button,
-  Navbar,
-  NavDropdown,
-  Nav,
-} from "react-bootstrap";
+import { Container, Row, Col, Dropdown } from "react-bootstrap";
 import RightBar from "./RightBar";
 import Recently from "./Recently";
 import FileContainer from "./FileContainer";

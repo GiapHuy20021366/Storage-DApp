@@ -36,11 +36,11 @@ contract FileStorage {
     }
 
     function renameFile(
-        string memory cid,
+        string memory uuid,
         string memory newName,
         uint256 modify
     ) public returns (File memory) {
-        uint256 index = uuid2Index[cid];
+        uint256 index = uuid2Index[uuid];
         File storage file = files[index];
         file.name = newName;
         file.modify = modify;
